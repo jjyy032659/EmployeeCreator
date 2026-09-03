@@ -1,7 +1,8 @@
 package com.example.employeecreator.controller;
 
 import java.util.List;
-
+import com.example.employeecreator.dto.CreateEmployeeRequest;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,8 +10,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.DeleteMapping;
+
 import com.example.employeecreator.model.Employee;
 import com.example.employeecreator.service.EmployeeService;
+
+
 
 @RestController
 @RequestMapping("/employees")
@@ -32,8 +36,8 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public Employee create(@RequestBody Employee employee) {
-        return employeeService.create(employee);
+    public Employee create(@Valid @RequestBody CreateEmployeeRequest request) {
+        return employeeService.create(request);
     }
 
     @DeleteMapping("/{id}")
