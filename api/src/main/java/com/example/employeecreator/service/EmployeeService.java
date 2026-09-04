@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.example.employeecreator.dto.CreateEmployeeRequest;
+import com.example.employeecreator.exception.EmployeeNotFoundException;
 import com.example.employeecreator.mapper.EmployeeMapper;
 import com.example.employeecreator.model.Employee;
 import com.example.employeecreator.repository.EmployeeRepository;
@@ -26,7 +27,7 @@ private final EmployeeMapper employeeMapper;
 
     public Employee findById(Long id) {
         return employeeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee not found: " + id));
+                .orElseThrow(() -> new EmployeeNotFoundException(id));
     }
 
      public Employee create(CreateEmployeeRequest request) {
@@ -35,6 +36,9 @@ private final EmployeeMapper employeeMapper;
     }
 
     public void delete(Long id) {
+         if (!employeeRepository.existsById(id)) {
+            throw new EmployeeNotFoundException(id);
+        }
         employeeRepository.deleteById(id);
     }
 }
