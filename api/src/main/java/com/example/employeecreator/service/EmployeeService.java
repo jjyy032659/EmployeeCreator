@@ -14,9 +14,10 @@ import com.example.employeecreator.repository.EmployeeRepository;
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
-private final EmployeeMapper employeeMapper;
-      public EmployeeService(EmployeeRepository employeeRepository,
-                           EmployeeMapper employeeMapper) {
+    private final EmployeeMapper employeeMapper;
+
+    public EmployeeService(EmployeeRepository employeeRepository,
+            EmployeeMapper employeeMapper) {
         this.employeeRepository = employeeRepository;
         this.employeeMapper = employeeMapper;
     }
@@ -30,15 +31,23 @@ private final EmployeeMapper employeeMapper;
                 .orElseThrow(() -> new EmployeeNotFoundException(id));
     }
 
-     public Employee create(CreateEmployeeRequest request) {
+    public Employee create(CreateEmployeeRequest request) {
         Employee employee = employeeMapper.toEntity(request);
         return employeeRepository.save(employee);
     }
 
     public void delete(Long id) {
-         if (!employeeRepository.existsById(id)) {
+        if (!employeeRepository.existsById(id)) {
             throw new EmployeeNotFoundException(id);
         }
         employeeRepository.deleteById(id);
+    }
+
+    public Employee update(Long id, CreateEmployeeRequest request) {
+        Employee existing = employeeRepository.findById(id)
+                .orElseThrow(() -> new EmployeeNotFoundException(id));
+
+        employeeMapper.updateEntity(existing, request);
+        return employeeRepository.save(existing);
     }
 }

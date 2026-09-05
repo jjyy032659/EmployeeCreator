@@ -5,6 +5,7 @@ import com.example.employeecreator.dto.CreateEmployeeRequest;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,8 +14,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 
 import com.example.employeecreator.model.Employee;
 import com.example.employeecreator.service.EmployeeService;
-
-
 
 @RestController
 @RequestMapping("/employees")
@@ -43,5 +42,11 @@ public class EmployeeController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         employeeService.delete(id);
+    }
+
+    @PutMapping("/{id}")
+    public Employee update(@PathVariable Long id,
+            @Valid @RequestBody CreateEmployeeRequest request) {
+        return employeeService.update(id, request);
     }
 }
