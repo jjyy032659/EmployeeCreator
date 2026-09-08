@@ -1,15 +1,28 @@
 import { useEffect } from 'react';
 import { getEmployees } from './api/employees';
+import { useQuery } from '@tanstack/react-query';
+
 
 function App() {
-  useEffect(() => {
-    console.log('API_URL:', import.meta.env.VITE_API_URL);
-    getEmployees()
-      .then((employees) => console.log('Employees:', employees))
-      .catch((error) => console.error('Failed:', error));
-  }, []);
+  const { data: employees, isLoading, error } = useQuery({
+    queryKey: ['employees'],
+    queryFn: getEmployees,
+  });
 
-  return <h1>Employee Creator</h1>;
+  if (isLoading) return <p>Loading</p>
+  if (error) return <p>Error:{error.message}</p>
+
+  return (<div>
+    <ul>
+      {employees?.map((employee) => (
+        <li key={employee.id}>
+          {employee.firstName} {employee.lastName} — {employee.email}
+        </li>
+      ))}
+    </ul>
+  </div>)
+
+
 }
 
 export default App;
