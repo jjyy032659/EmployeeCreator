@@ -1,28 +1,21 @@
-import { useEffect } from 'react';
-import { getEmployees } from './api/employees';
-import { useQuery } from '@tanstack/react-query';
-
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import EmployeeListPage from './pages/EmployeeListPage.tsx';
+import EmployeeFormPage from './pages/EmployeeFormPage.tsx';
 
 function App() {
-  const { data: employees, isLoading, error } = useQuery({
-    queryKey: ['employees'],
-    queryFn: getEmployees,
-  });
 
-  if (isLoading) return <p>Loading</p>
-  if (error) return <p>Error:{error.message}</p>
-
-  return (<div>
-    <ul>
-      {employees?.map((employee) => (
-        <li key={employee.id}>
-          {employee.firstName} {employee.lastName} — {employee.email}
-        </li>
-      ))}
-    </ul>
-  </div>)
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<EmployeeListPage />}></Route>
+        <Route path="/employees/new" element={<EmployeeFormPage />}></Route>
+        <Route path="/employees/:id/edit" element={<EmployeeFormPage />}></Route>
+      </Routes>
 
 
+    </BrowserRouter>
+
+
+  )
 }
-
-export default App;
+  export default App;
