@@ -17,11 +17,11 @@ export const employeeSchema = z
       .min(1, 'Last name is required')
       .max(50, 'Last name must be 50 characters or fewer'),
 
-    email: z
+        email: z
       .string()
       .min(1, 'Email is required')
-      .email('Must be a valid email address')
-      .max(255),
+      .max(255)
+      .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Must be a valid email address'),
 
     mobileNumber: z
       .string()

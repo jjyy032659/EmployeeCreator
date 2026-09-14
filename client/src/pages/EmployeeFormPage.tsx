@@ -111,7 +111,7 @@ function EmployeeFormPage() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
+       <form onSubmit={handleSubmit(onSubmit)} className="space-y-10" noValidate>
           <section className="space-y-5">
             <h2 className="text-xl font-bold text-gray-900">Personal information</h2>
 
