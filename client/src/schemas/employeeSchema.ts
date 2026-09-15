@@ -17,7 +17,7 @@ export const employeeSchema = z
       .min(1, 'Last name is required')
       .max(50, 'Last name must be 50 characters or fewer'),
 
-        email: z
+    email: z
       .string()
       .min(1, 'Email is required')
       .max(255)
@@ -39,8 +39,10 @@ export const employeeSchema = z
 
     }),
 
-    startDate: z.string().min(1, 'Start date is required'),
-
+    startDate: z.string().min(1, 'Start date is required')
+      .refine((value) => new Date(value) <= new Date(), {
+        message: 'Start date cannot be in the future',
+      }),
     finishDate: z.string().optional(),
 
     ongoing: z.boolean(),
