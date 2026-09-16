@@ -1,0 +1,2 @@
+db_password = "your-database-password"
+my_ip       = "1.2.3.4/32"
