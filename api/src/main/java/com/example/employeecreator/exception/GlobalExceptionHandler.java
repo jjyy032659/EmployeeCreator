@@ -48,4 +48,21 @@ public class GlobalExceptionHandler {
         body.put("message", "An employee with that email already exists");
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
+        @ExceptionHandler(ContractNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleContractNotFound(ContractNotFoundException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", 404);
+        body.put("message", ex.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ActiveContractExistsException.class)
+    public ResponseEntity<Map<String, Object>> handleActiveContract(ActiveContractExistsException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", 409);
+        body.put("message", ex.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+    }
 }
