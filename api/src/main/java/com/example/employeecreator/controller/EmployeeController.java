@@ -1,23 +1,26 @@
 package com.example.employeecreator.controller;
 
 import java.util.List;
-import com.example.employeecreator.dto.CreateEmployeeRequest;
-import jakarta.validation.Valid;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.DeleteMapping;
 
-import com.example.employeecreator.model.Employee;
+import com.example.employeecreator.dto.CreateEmployeeRequest;
+import com.example.employeecreator.dto.EmployeeResponse;
 import com.example.employeecreator.service.EmployeeService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
+
     private final EmployeeService employeeService;
 
     public EmployeeController(EmployeeService employeeService) {
@@ -25,28 +28,28 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public List<Employee> findAll() {
+    public List<EmployeeResponse> findAll() {
         return employeeService.findAll();
     }
 
     @GetMapping("/{id}")
-    public Employee findById(@PathVariable Long id) {
+    public EmployeeResponse findById(@PathVariable Long id) {
         return employeeService.findById(id);
     }
 
     @PostMapping
-    public Employee create(@Valid @RequestBody CreateEmployeeRequest request) {
+    public EmployeeResponse create(@Valid @RequestBody CreateEmployeeRequest request) {
         return employeeService.create(request);
+    }
+
+    @PutMapping("/{id}")
+    public EmployeeResponse update(@PathVariable Long id,
+                                   @Valid @RequestBody CreateEmployeeRequest request) {
+        return employeeService.update(id, request);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         employeeService.delete(id);
-    }
-
-    @PutMapping("/{id}")
-    public Employee update(@PathVariable Long id,
-            @Valid @RequestBody CreateEmployeeRequest request) {
-        return employeeService.update(id, request);
     }
 }

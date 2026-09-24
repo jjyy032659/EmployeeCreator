@@ -1,15 +1,17 @@
 package com.example.employeecreator.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
-
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "employees")
@@ -37,24 +39,11 @@ public class Employee {
     @Column(nullable = false, length = 255)
     private String address;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    private ContractType contractType;
 
-    @Column(nullable = false)
-    private LocalDate startDate;
 
-    private LocalDate finishDate;
-
-    @Column(nullable = false)
-    private boolean ongoing;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    private EmploymentBasis employmentBasis;
-
-    @Column(nullable = false)
-    private Integer hoursPerWeek;
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("startDate DESC")
+    private List<Contract> contracts = new ArrayList<>();
 
     public Employee() {
     }
@@ -115,51 +104,17 @@ public class Employee {
         this.address = address;
     }
 
-    public ContractType getContractType() {
-        return contractType;
+    public List<Contract> getContracts() {
+        return contracts;
     }
 
-    public void setContractType(ContractType contractType) {
-        this.contractType = contractType;
+    public void addContract(Contract contract) {
+        contracts.add(contract);
+        contract.setEmployee(this);
     }
 
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getFinishDate() {
-        return finishDate;
-    }
-
-    public void setFinishDate(LocalDate finishDate) {
-        this.finishDate = finishDate;
-    }
-
-    public boolean isOngoing() {
-        return ongoing;
-    }
-
-    public void setOngoing(boolean ongoing) {
-        this.ongoing = ongoing;
-    }
-
-    public EmploymentBasis getEmploymentBasis() {
-        return employmentBasis;
-    }
-
-    public void setEmploymentBasis(EmploymentBasis employmentBasis) {
-        this.employmentBasis = employmentBasis;
-    }
-
-    public Integer getHoursPerWeek() {
-        return hoursPerWeek;
-    }
-
-    public void setHoursPerWeek(Integer hoursPerWeek) {
-        this.hoursPerWeek = hoursPerWeek;
+    public void removeContract(Contract contract) {
+        contracts.remove(contract);
+        contract.setEmployee(null);
     }
 }
